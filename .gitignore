@@ -1,2 +1,8 @@
 # ignore IDE project settings
 .idea
+
+# python ignore
+__pycache__
+
+# MacOS
+.DS_Store
