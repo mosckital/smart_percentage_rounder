@@ -10,12 +10,13 @@ from src.rounder import original_rounder
 from typing import Sequence, Union, Optional
 
 
-def csv_rounder(csv_path: str):
+def csv_rounder(csv_path: str, has_total_col: bool = False):
     """
     To apply the percentage conversion and the smart percentage rounding to all
     lines in the provided csv file and save the results in a file.
 
     :param csv_path: the path to the input CSV file
+    :param has_total_col: `True` if the last data column is a total column
     :return: the path to the result CSV file
     """
     # extract directory and input file name
@@ -30,11 +31,11 @@ def csv_rounder(csv_path: str):
         reader = csv.reader(input_file)
         writer = csv.writer(output_file)
         for line, row in enumerate(reader):
-            writer.writerow(row_rounder(row, line))
+            writer.writerow(row_rounder(row, line, has_total_col=has_total_col))
         return output_path
 
 
-def row_rounder(row: Sequence[str], line: Optional[int]) -> Sequence[Union[str, float]]:
+def row_rounder(row: Sequence[str], line: Optional[int], has_total_col: bool = False) -> Sequence[Union[str, float]]:
     """
     To convert the data in a CSV row to percentages and then smartly round the
     percentages to no decimal with a guarantee that the sum of rounded
@@ -45,17 +46,23 @@ def row_rounder(row: Sequence[str], line: Optional[int]) -> Sequence[Union[str, 
 
     Only the data columns will be applied the smart rounding and the other two
     parts will keep unchanged in the return result.
+    If `has_total_col` has been set to True, the last column of the data columns
+    will be considered as the total column and not involve into the percentage
+    conversion and smart rounding.
 
     :param row: the line to apply the smart rounding
     :param line: the line number
+    :param has_total_col: `True` if the last data column is a total column
     :return: the smartly rounded line in CSV format
     """
     data, empty_tail, result = [], [], []
+    last_data_field = None
     for field in row:
         try:
             # float conversion may fail in the two optional parts of the row
             val = float(field)
             data.append(val)
+            last_data_field = field
         except ValueError:
             if data:
                 # after data part, so in the trailing column(s) part
@@ -69,7 +76,13 @@ def row_rounder(row: Sequence[str], line: Optional[int]) -> Sequence[Union[str, 
                 result.append(field)
     # construct the return result
     if data:
-        result.extend(original_rounder(data))
+        if has_total_col:
+            result.extend(original_rounder(data[:-1]))
+            # to use the original string instead of the converted float
+            # as it may be originally an int
+            result.append(last_data_field)
+        else:
+            result.extend(original_rounder(data))
     if empty_tail:
         result.extend(empty_tail)
     return result
