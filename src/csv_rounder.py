@@ -16,7 +16,7 @@ def csv_rounder(csv_path: str):
     lines in the provided csv file and save the results in a file.
 
     :param csv_path: the path to the input CSV file
-    :return: None, but a result file will be created aside the input file
+    :return: the path to the result CSV file
     """
     # extract directory and input file name
     csv_dir, file_name = dirname(csv_path), basename(csv_path)
@@ -31,6 +31,7 @@ def csv_rounder(csv_path: str):
         writer = csv.writer(output_file)
         for line, row in enumerate(reader):
             writer.writerow(row_rounder(row, line))
+        return output_path
 
 
 def row_rounder(row: Sequence[str], line: Optional[int]) -> Sequence[Union[str, float]]:

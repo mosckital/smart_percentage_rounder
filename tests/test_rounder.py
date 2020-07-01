@@ -24,9 +24,7 @@ OUTPUT_EXPECTED_PATH = join(SCRIPT_PATH, './test_files/test_output_expected.csv'
 
 
 class TestRounder:
-    """
-    Test suite for the methods in the module `src/rounder.py`.
-    """
+    """Test suite for the methods in the module `src/rounder.py`."""
 
     EPS = 0.01  # epsilon for float comparison
     GOAL = 1.00  # target (100%) in decimal
