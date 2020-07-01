@@ -3,7 +3,7 @@ import pytest
 from tempfile import TemporaryDirectory as TmpDir
 from shutil import copy
 from os.path import join, dirname
-from src.csv_rounder import csv_rounder
+from rounders.csv_rounder import csv_rounder
 
 
 SCRIPT_PATH = dirname(__file__)
@@ -14,7 +14,7 @@ RESULT_WITH_TOTAL_PATH = join(SCRIPT_PATH, './test_files/test_result_with_total.
 
 
 class TestCsvRounder:
-    """Test suite for the methods in the module `src/csv_rounder.py`."""
+    """Test suite for the methods in the module `rounders/csv_rounder.py`."""
 
     @pytest.mark.parametrize('input_path, answer_path, has_total_col', [
         (DATA_NO_TOTAL_PATH,
