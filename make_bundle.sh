@@ -13,7 +13,7 @@ cp -r rounders bundles/
 mv bundles/rounders/__main__.py bundles
 # create the zip file
 cd bundles
-zip -r rounders.zip * -x '*__pycache__*'
+zip -r csv_rounder.zip * -x '*__pycache__*'
 # clean up
 rm -r rounders
 rm __main__.py

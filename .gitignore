@@ -6,6 +6,3 @@ __pycache__
 
 # MacOS
 .DS_Store
-
-# local bundle copies
-bundles
