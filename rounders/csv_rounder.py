@@ -27,7 +27,7 @@ def csv_rounder(csv_path: str, has_total_col: bool = False):
     output_name = '.'.join(output_parts)
     output_path = join(csv_dir, output_name)
     # apply the smart rounding one line by one line
-    with open(csv_path, newline='') as input_file, open(output_path, 'w', newline='') as output_file:
+    with open(csv_path, newline='', encoding='ISO-8859-1') as input_file, open(output_path, 'w', newline='') as output_file:
         reader = csv.reader(input_file)
         writer = csv.writer(output_file)
         for line, row in enumerate(reader):
@@ -60,7 +60,7 @@ def row_rounder(row: Sequence[str], line: Optional[int], has_total_col: bool = F
     for field in row:
         try:
             # float conversion may fail in the two optional parts of the row
-            val = float(field)
+            val = float(field.strip('%'))  # strip the symbol for the percentage numbers
             data.append(val)
             last_data_field = field
         except ValueError:
